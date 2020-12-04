@@ -361,6 +361,19 @@ func (c *Configuration) recordRelease(r *release.Release) {
 	}
 }
 
+// getRegistryClient returns the registry.Client object. Currently,
+// there is no way for us to call this function from an external code because
+// registry is still internal to helm.
+func getRegistryClient() (*registry.Client, error) {
+	settings := cli.New()
+
+	return registry.NewClient(
+		registry.ClientOptDebug(settings.Debug),
+		registry.ClientOptWriter(os.Stdout),
+		registry.ClientOptCredentialsFile(settings.RegistryConfig),
+	)
+}
+
 // Init initializes the action configuration
 func (c *Configuration) Init(getter genericclioptions.RESTClientGetter, namespace, helmDriver string, log DebugLog) error {
 	kc := kube.New(getter)
@@ -411,6 +424,7 @@ func (c *Configuration) Init(getter genericclioptions.RESTClientGetter, namespac
 		panic("Unknown driver in HELM_DRIVER: " + helmDriver)
 	}
 
+	c.RegistryClient, _ = getRegistryClient()
 	c.RESTClientGetter = getter
 	c.KubeClient = kc
 	c.Releases = store
