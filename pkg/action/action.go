@@ -18,7 +18,6 @@ package action
 
 import (
 	"bytes"
-	"cli"
 	"fmt"
 	"os"
 	"path"
@@ -36,6 +35,7 @@ import (
 	"helm.sh/helm/v3/internal/experimental/registry"
 	"helm.sh/helm/v3/pkg/chart"
 	"helm.sh/helm/v3/pkg/chartutil"
+	"helm.sh/helm/v3/pkg/cli"
 	"helm.sh/helm/v3/pkg/engine"
 	"helm.sh/helm/v3/pkg/kube"
 	"helm.sh/helm/v3/pkg/postrender"
